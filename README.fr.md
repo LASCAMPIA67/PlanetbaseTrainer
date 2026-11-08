@@ -237,7 +237,7 @@ Vos sauvegardes ne sont jamais touchées. À noter : « Vérifier l'intégrité 
 <details>
 <summary><b>Rien ne se passe en jeu, F9 ne fait rien</b></summary>
 
-Vérifiez que `winhttp.dll` est bien à côté de `Planetbase.exe`, puis lancez le jeu : un fichier `BepInEx\LogOutput.log` doit apparaître. Ouvrez-le et cherchez la ligne `Planetbase Trainer 1.0.0 ready`. Si le fichier n'apparaît pas, BepInEx ne se charge pas : vérifiez que vous avez installé la version **x86** de BepInEx 5, car la version x64 ne se charge pas dans Planetbase.
+Vérifiez que `winhttp.dll` est bien à côté de `Planetbase.exe`, puis lancez le jeu : un fichier `BepInEx\LogOutput.log` doit apparaître. Ouvrez-le et cherchez la ligne `Planetbase Trainer 1.1.0 ready`, avec votre numéro de version. Si le fichier n'apparaît pas, BepInEx ne se charge pas : vérifiez que vous avez installé la version **x86** de BepInEx 5, car la version x64 ne se charge pas dans Planetbase.
 
 </details>
 
