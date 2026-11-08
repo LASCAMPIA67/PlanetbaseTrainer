@@ -18,6 +18,10 @@ namespace PlanetbaseTrainer.UI
         private const string SearchControl = "pbtrainer.search";
         private const float BaseMinWidth = 780f;
         private const float BaseMinHeight = 560f;
+        private const float SidebarWidth = 210f;
+        private const float SwitchWidth = 46f;
+        private const float RunButtonWidth = 120f;
+        private const float HotkeyChipWidth = 118f;
 
         private static readonly Tab[] TabOrder =
         {
@@ -43,7 +47,10 @@ namespace PlanetbaseTrainer.UI
 
         private static float _scale = 1f;
         private static float _layoutScale = -1f;
+        private static float _layoutMinWidth;
         private static Vector2 _layoutScreen;
+        private static float _minWidth = BaseMinWidth;
+        private static float _minWidthKey = -1f;
         private static Rect _window;
         private static Tab _tab = Tab.Colonists;
         private static string _search = string.Empty;
@@ -321,11 +328,13 @@ namespace PlanetbaseTrainer.UI
         private static void EnsureWindow()
         {
             var screen = new Vector2(Screen.width, Screen.height);
-            if (Mathf.Approximately(_layoutScale, _scale) && _layoutScreen == screen)
+            float minWidth = MinWidth;
+            if (Mathf.Approximately(_layoutScale, _scale) && _layoutScreen == screen && Mathf.Approximately(_layoutMinWidth, minWidth))
                 return;
             _layoutScale = _scale;
             _layoutScreen = screen;
-            float width = Mathf.Max(Settings.WinW.Value, BaseMinWidth) * _scale;
+            _layoutMinWidth = minWidth;
+            float width = Mathf.Max(Settings.WinW.Value, minWidth) * _scale;
             float height = Mathf.Max(Settings.WinH.Value, BaseMinHeight) * _scale;
             float x = Settings.WinX.Value;
             float y = Settings.WinY.Value;
@@ -365,7 +374,7 @@ namespace PlanetbaseTrainer.UI
 
             float headerHeight = 62f * s;
             float footerHeight = 42f * s;
-            float sidebarWidth = 210f * s;
+            float sidebarWidth = SidebarWidth * s;
             var header = new Rect(w.x, w.y, w.width, headerHeight);
             var sidebar = new Rect(w.x, w.y + headerHeight, sidebarWidth, w.height - headerHeight - footerHeight);
             var content = new Rect(w.x + sidebarWidth, w.y + headerHeight, w.width - sidebarWidth, w.height - headerHeight - footerHeight);
@@ -777,6 +786,42 @@ namespace PlanetbaseTrainer.UI
 
         private static float CardInnerWidth(float width) => width - CardPadding * 2f - 26f * _scale;
 
+        /// <summary>
+        /// Narrowest window, in unscaled units, that still fits every cheat title on one line next to its controls,
+        /// with its "risky" tag. Titles depend on the language and on the installed fonts, so it is measured.
+        /// </summary>
+        private static float MinWidth
+        {
+            get
+            {
+                float key = Loc.Version * 1000f + _scale;
+                if (Mathf.Approximately(_minWidthKey, key))
+                    return _minWidth;
+                _minWidthKey = key;
+                float card = 0f;
+                foreach (var cheat in Cheats.All)
+                    card = Mathf.Max(card, TitleWidth(cheat) + TitleRowControlsWidth(cheat));
+                // Card: padding on both sides and the favorite star. Window: sidebar, then the margins and the
+                // scrollbar gutter around the cards (see DrawContent).
+                card += CardPadding * 2f + 26f * _scale + 1f;
+                _minWidth = Mathf.Max(BaseMinWidth, Mathf.Ceil(card / _scale + SidebarWidth + 28f + 14f));
+                return _minWidth;
+            }
+        }
+
+        /// <summary>Width of a card's title, with its "risky" tag.</summary>
+        private static float TitleWidth(Cheat cheat)
+        {
+            float width = Draw.Measure(cheat.Name, Theme.Title).x;
+            return cheat.Danger ? width + 9f * _scale + DangerTagWidth() : width;
+        }
+
+        private static float DangerTagWidth() => Draw.Measure(Loc.T("ui.danger"), Theme.TinyBold).x + 14f * _scale;
+
+        /// <summary>Controls on the right of a card's title row: switch or run button, then the hotkey chip.</summary>
+        private static float TitleRowControlsWidth(Cheat cheat) =>
+            ((cheat is ToggleCheat ? SwitchWidth : RunButtonWidth) + 12f + HotkeyChipWidth + 10f) * _scale;
+
         private static float MeasureCard(Cheat cheat, float width)
         {
             float s = _scale;
@@ -841,7 +886,7 @@ namespace PlanetbaseTrainer.UI
             // Main control (switch or run button).
             if (toggle != null)
             {
-                var switchRect = new Rect(right - 46f * s, r.y + p, 46f * s, 24f * s);
+                var switchRect = new Rect(right - SwitchWidth * s, r.y + p, SwitchWidth * s, 24f * s);
                 if (Widgets.Switch(switchRect, on, cheat, supported, s))
                     toggle.Set(!on);
                 right = switchRect.x - 12f * s;
@@ -849,7 +894,7 @@ namespace PlanetbaseTrainer.UI
             else if (action != null)
             {
                 bool confirming = TrainerRuntime.IsAwaitingConfirm(action);
-                var button = new Rect(right - 120f * s, r.y + p - 2f * s, 120f * s, 28f * s);
+                var button = new Rect(right - RunButtonWidth * s, r.y + p - 2f * s, RunButtonWidth * s, 28f * s);
                 string label = !inGame ? Loc.T("ui.needgame") : confirming ? Loc.T("ui.confirm") : Loc.T("ui.run");
                 var kind = confirming || action.Danger ? Widgets.ButtonKind.Danger : Widgets.ButtonKind.Primary;
                 if (Widgets.Button(button, label, kind, supported && inGame, s))
@@ -857,7 +902,7 @@ namespace PlanetbaseTrainer.UI
                 right = button.x - 12f * s;
             }
 
-            var hotkey = new Rect(right - 118f * s, r.y + p - 1f * s, 118f * s, 26f * s);
+            var hotkey = new Rect(right - HotkeyChipWidth * s, r.y + p - 1f * s, HotkeyChipWidth * s, 26f * s);
             Widgets.HotkeyChip(hotkey, cheat.Hotkey, cheat.Name, s);
             right = hotkey.x - 10f * s;
 
@@ -868,7 +913,7 @@ namespace PlanetbaseTrainer.UI
             {
                 float titleWidth = Draw.Measure(cheat.Name, Theme.Title).x;
                 string tagText = Loc.T("ui.danger");
-                var tag = new Rect(left + titleWidth + 9f * s, title.center.y - 9f * s, Draw.Measure(tagText, Theme.TinyBold).x + 14f * s, 18f * s);
+                var tag = new Rect(left + titleWidth + 9f * s, title.center.y - 9f * s, DangerTagWidth(), 18f * s);
                 if (tag.xMax < right)
                 {
                     Draw.Box(tag, Theme.Alpha(Theme.Danger, 0.16f), 9f * s);
@@ -1038,7 +1083,7 @@ namespace PlanetbaseTrainer.UI
                 }
                 else if (_drag == DragMode.Resize)
                 {
-                    _window.width = Mathf.Max(BaseMinWidth * s, e.mousePosition.x + _dragOffset.x - _window.x);
+                    _window.width = Mathf.Max(MinWidth * s, e.mousePosition.x + _dragOffset.x - _window.x);
                     _window.height = Mathf.Max(BaseMinHeight * s, e.mousePosition.y + _dragOffset.y - _window.y);
                     ClampWindow();
                     e.Use();

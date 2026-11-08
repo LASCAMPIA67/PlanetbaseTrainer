@@ -13,6 +13,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   achievement of the game at once, through the game's own Steam connection. It is permanent, so it is marked as risky
   and asks for confirmation.
 
+### Fixed
+
+- The menu could be made so narrow that some cheat names were cut off and lost their risky tag. Its minimum width now
+  fits every name, whatever the language and the menu size.
+
 ## [1.0.0] - 2026-11-08
 
 First public release, for Planetbase 1.4.2.
