@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using BepInEx.Configuration;
 using HarmonyLib;
 using Planetbase;
 using PlanetbaseTrainer.Core;
@@ -17,12 +18,20 @@ namespace PlanetbaseTrainer.Diagnostics
     /// (except those writing to the player profile or the Steam account), takes screenshots, then quits. Achievements and
     /// milestones are held back for the whole run. Never active in normal use.
     /// <para>
+    /// The game plays with a throw-away profile and the trainer with a throw-away configuration, both in the output
+    /// folder, in a 1920x1080 window: the player's own files are never touched, and the screenshots always show the
+    /// default settings at the size the documentation expects.
+    /// </para>
+    /// <para>
     /// PBTRAINER_SELFTEST_LANGS (for example "en,fr") repeats the in-game screenshots in each listed language: this is how
     /// the documentation screenshots are produced. The language override is never saved to the configuration.
     /// </para>
     /// </summary>
     internal static class SelfTest
     {
+        private const int ShotWidth = 1920;
+        private const int ShotHeight = 1080;
+
         private static readonly AccessTools.FieldRef<GameManager, GameManager.State> ManagerState =
             Ref.Field<GameManager, GameManager.State>("mState");
         private static readonly System.Reflection.FieldInfo ManagerInstance = Ref.StaticField(typeof(GameManager), "mInstance");
@@ -32,6 +41,22 @@ namespace PlanetbaseTrainer.Diagnostics
         private static List<UiLanguage?> _languages;
         private static IEnumerator<float> _script;
         private static float _resumeAt;
+
+        /// <summary>
+        /// The trainer configuration of a test run, a new file in the output folder: null in normal use. Called before
+        /// the settings are loaded, so that the player's settings, favorites and remembered cheats are never read nor
+        /// written by a test.
+        /// </summary>
+        public static ConfigFile CreateConfig()
+        {
+            string dir = Environment.GetEnvironmentVariable("PBTRAINER_SELFTEST");
+            if (string.IsNullOrEmpty(dir))
+                return null;
+            Directory.CreateDirectory(dir);
+            string path = Path.Combine(dir, "trainer.cfg");
+            File.Delete(path); // Every run starts from the default settings.
+            return new ConfigFile(path, true);
+        }
 
         public static void Init()
         {
@@ -99,8 +124,12 @@ namespace PlanetbaseTrainer.Diagnostics
                 }
                 yield return 0.5f;
             }
+            // At startup, the game applies the resolution saved in its profile: the native one for a new profile.
+            Screen.SetResolution(ShotWidth, ShotHeight, FullScreenMode.Windowed);
             SetLanguage(_languages[0]);
             yield return 3f;
+            if (Screen.width != ShotWidth || Screen.height != ShotHeight)
+                Log.Warn($"[SelfTest] the game runs at {Screen.width}x{Screen.height} instead of {ShotWidth}x{ShotHeight}");
 
             // ---- 2. The menu on the title screen.
             foreach (Tab tab in Enum.GetValues(typeof(Tab)))

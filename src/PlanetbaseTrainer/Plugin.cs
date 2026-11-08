@@ -29,9 +29,11 @@ namespace PlanetbaseTrainer
 
             try
             {
-                Settings.Init(Config);
+                // The self-test plays with a throw-away configuration (null in normal use).
+                var config = Diagnostics.SelfTest.CreateConfig() ?? Config;
+                Settings.Init(config);
                 Loc.Init();
-                Cheats.Init(Config);
+                Cheats.Init(config);
                 TrainerUI.Init();
 
                 _harmony = new Harmony(MyPluginInfo.PLUGIN_GUID);

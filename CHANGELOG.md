@@ -17,6 +17,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - The menu could be made so narrow that some cheat names were cut off and lost their risky tag. Its minimum width now
   fits every name, whatever the language and the menu size.
+- The in-game self-test no longer changes the trainer settings, which turned the remembered cheats off, and takes its
+  screenshots in a 1920×1080 window whatever the screen resolution.
 
 ## [1.0.0] - 2026-11-08
 

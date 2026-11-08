@@ -11,7 +11,7 @@ namespace PlanetbaseTrainer.Core
 
     internal enum HudPosition { TopCenter, TopLeft, TopRight, BottomLeft, BottomRight }
 
-    /// <summary>Global trainer settings (persisted in BepInEx/config/com.planetbase.trainer.cfg).</summary>
+    /// <summary>Global trainer settings (persisted in BepInEx/config/com.lascampia.planetbasetrainer.cfg).</summary>
     internal static class Settings
     {
         private const string General = "1. General";

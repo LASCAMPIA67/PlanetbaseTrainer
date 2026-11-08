@@ -90,20 +90,21 @@ every member accessed by name through reflection exists. Run it after every game
 When the `PBTRAINER_SELFTEST` environment variable points to a folder, the plugin runs an end-to-end test: it opens the
 menu on every tab, starts a throw-away game, turns every cheat on, runs every action (except those that write to the
 player profile or the Steam account, whose achievements it only reads), takes screenshots, turns everything off and
-quits. The game plays with a temporary profile created in that folder, so your own profile and saves are never touched,
-and achievements and milestones stay locked during the whole run.
+quits. The game plays with a temporary profile, and the trainer with its default settings, both kept in that folder:
+your own profile, saves and trainer settings are never touched. Achievements and milestones stay locked during the
+whole run, and the game runs in a 1920×1080 window.
 
 ```powershell
 $game = .\tools\Resolve-PlanetbaseDir.ps1
 Set-Content "$game\steam_appid.txt" 403190       # lets the game start outside Steam (Steam must be running)
 $env:PBTRAINER_SELFTEST = "$env:TEMP\pbtrainer-selftest"
 $env:PBTRAINER_SELFTEST_LANGS = 'en,fr'           # optional: in-game screenshots in each language
-& "$game\Planetbase.exe" -screen-fullscreen 0 -screen-width 1920 -screen-height 1080 | Out-Null
+& "$game\Planetbase.exe" | Out-Null
 Remove-Item "$game\steam_appid.txt"
 Select-String 'SelfTest\] done' "$game\BepInEx\LogOutput.log"   # expect "errors logged: 0"
 ```
 
-The README screenshots come from such a run at 1920×1080, with `PBTRAINER_SELFTEST_LANGS = 'en,fr'`. To update them,
+The README screenshots come from such a run, with `PBTRAINER_SELFTEST_LANGS = 'en,fr'`. To update them,
 run `python tools\make_docs_images.py "$env:TEMP\pbtrainer-selftest" docs\images` (Python 3 with Pillow).
 
 ## Coding guidelines
