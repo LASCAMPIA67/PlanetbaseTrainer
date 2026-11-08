@@ -1,6 +1,6 @@
 """Builds the README screenshots and the social preview from the in-game self-test captures.
 
-Run the self-test at 1920x1080 with PBTRAINER_SELFTEST_LANGS=en,fr (see CONTRIBUTING.md), then:
+Run the self-test with PBTRAINER_SELFTEST_LANGS=en,fr (see CONTRIBUTING.md), which captures 1920x1080 frames, then:
 
     python tools/make_docs_images.py <self-test output folder> docs/images
 
@@ -21,7 +21,10 @@ TABS = ["Colonists", "Construction", "Resources", "Base", "Trade", "Threats", "T
 
 
 def load(name):
-    return Image.open(SRC / f"{name}.png").convert("RGB")
+    img = Image.open(SRC / f"{name}.png").convert("RGB")
+    if img.size != (1920, 1080):
+        raise SystemExit(f"{name}.png is {img.size[0]}x{img.size[1]}: the crops expect 1920x1080 captures")
+    return img
 
 
 def save_png(img, path):
