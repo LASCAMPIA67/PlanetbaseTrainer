@@ -1,0 +1,31 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+[*.{csproj,props,targets,json,jsonc,xml,config,yml,yaml}]
+indent_size = 2
+
+[*.sln]
+charset = utf-8-bom
+end_of_line = crlf
+indent_style = tab
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.cs]
+csharp_style_namespace_declarations = block_scoped:suggestion
+csharp_prefer_braces = when_multiline:suggestion
+# Braces of a block under a case label are aligned with the label.
+csharp_indent_case_contents_when_block = false
+csharp_style_var_when_type_is_apparent = true:suggestion
+dotnet_sort_system_directives_first = true
+dotnet_style_readonly_field = true:suggestion
+# Harmony patch classes follow the <Type>_<method> naming convention.
+dotnet_diagnostic.IDE1006.severity = none

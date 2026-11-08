@@ -1,0 +1,37 @@
+name: Feature request
+description: Suggest a new cheat or an improvement.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the idea! Please check the [list of cheats](https://github.com/LASCAMPIA67/PlanetbaseTrainer#cheats) and the [existing issues](https://github.com/LASCAMPIA67/PlanetbaseTrainer/issues?q=is%3Aissue) first. English and French are both fine.
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like?
+      description: Describe the cheat or the improvement, and how you would use it in game.
+      placeholder: A cheat that makes every colonist a specialist of my choice.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why?
+      description: What would it make easier or more fun?
+    validations:
+      required: false
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Other ways to get the same result, with or without the trainer.
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched the existing issues and this idea isn't suggested yet.
+          required: true

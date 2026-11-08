@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question or help
+    url: https://github.com/LASCAMPIA67/PlanetbaseTrainer/discussions/categories/q-a
+    about: Ask how to install or use the trainer.
+  - name: Security vulnerability
+    url: https://github.com/LASCAMPIA67/PlanetbaseTrainer/security/advisories/new
+    about: Report security issues privately, not in a public issue.

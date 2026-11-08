@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net10.0": {
+      "System.Reflection.MetadataLoadContext": {
+        "type": "Direct",
+        "requested": "[10.0.14, )",
+        "resolved": "10.0.14",
+        "contentHash": "TBqKGTYnKq/glgpGAM8iOSpSNlO++ZLbdOHHvxO/+QpvBYNfcP8dCi7m/da1tbG5zwmthf9+UHpjVq664HNnAg=="
+      }
+    }
+  }
+}

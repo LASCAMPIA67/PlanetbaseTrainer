@@ -1,0 +1,73 @@
+name: Bug report
+description: Something doesn't work as expected.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please check the [FAQ](https://github.com/LASCAMPIA67/PlanetbaseTrainer#faq) and the [existing issues](https://github.com/LASCAMPIA67/PlanetbaseTrainer/issues?q=is%3Aissue) first. English and French are both fine.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+      placeholder: I turned on "Unlimited resources" with Num 9, but my storage stays empty.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Load a game on the first planet.
+        2. Open the menu with F9 and go to the Resources tab.
+        3. ...
+    validations:
+      required: true
+  - type: input
+    id: trainer-version
+    attributes:
+      label: Trainer version
+      description: Shown in the menu header, below the title.
+      placeholder: "1.0.0"
+    validations:
+      required: true
+  - type: input
+    id: game-version
+    attributes:
+      label: Planetbase version
+      description: Shown in the bottom-right corner of the game's main menu.
+      placeholder: "1.4.2"
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: How did you install the trainer?
+      options:
+        - All-in-one package (PlanetbaseTrainer-with-BepInEx.zip)
+        - Plugin only (PlanetbaseTrainer.zip), on an existing BepInEx 5 install
+        - Built from source
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Log file
+      description: Start the game, reproduce the problem and quit, then drag and drop `BepInEx\LogOutput.log` from the game folder here.
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Anything else?
+      description: Other mods installed, operating system, screenshots…
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched the existing issues and this bug isn't reported yet.
+          required: true

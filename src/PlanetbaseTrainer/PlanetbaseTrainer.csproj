@@ -1,0 +1,92 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Planetbase 1.4.x = Unity 2022.3.62f2 (Mono, x86), scripting API: .NET Standard 2.1 -->
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>PlanetbaseTrainer</AssemblyName>
+    <RootNamespace>PlanetbaseTrainer</RootNamespace>
+    <Product>Planetbase Trainer</Product>
+    <Description>In-game trainer for Planetbase: 48 individually toggleable cheats, rebindable hotkeys, English and French UI.</Description>
+    <Version>1.0.0</Version>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Deterministic>true</Deterministic>
+    <DebugType>portable</DebugType>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <IsPackable>false</IsPackable>
+
+    <!-- Values consumed by BepInEx.PluginInfoProps (generates MyPluginInfo). The GUID must never change. -->
+    <BepInExPluginGuid>com.lascampia.planetbasetrainer</BepInExPluginGuid>
+    <BepInExPluginName>Planetbase Trainer</BepInExPluginName>
+    <BepInExPluginVersion>$(Version)</BepInExPluginVersion>
+
+    <!-- Copy the built plugin into <game>\BepInEx\plugins after each build -->
+    <DeployToGame Condition="'$(DeployToGame)' == ''">true</DeployToGame>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Compile-time only: BepInEx and HarmonyX are provided by the BepInEx install at runtime. -->
+    <PackageReference Include="BepInEx.Analyzers" Version="1.0.8" PrivateAssets="all" />
+    <PackageReference Include="BepInEx.Core" Version="5.4.21" IncludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="BepInEx.PluginInfoProps" Version="2.1.0" PrivateAssets="all" />
+    <!-- Same HarmonyX version as the one shipped with BepInEx 5.4.23.5 -->
+    <PackageReference Include="HarmonyX" Version="2.9.0" IncludeAssets="compile" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Game assemblies, referenced from the local install (never redistributed). -->
+    <Reference Include="Assembly-CSharp" HintPath="$(PlanetbaseManagedDir)Assembly-CSharp.dll" Private="false" />
+    <Reference Include="UnityEngine" HintPath="$(PlanetbaseManagedDir)UnityEngine.dll" Private="false" />
+    <Reference Include="UnityEngine.CoreModule" HintPath="$(PlanetbaseManagedDir)UnityEngine.CoreModule.dll" Private="false" />
+    <Reference Include="UnityEngine.IMGUIModule" HintPath="$(PlanetbaseManagedDir)UnityEngine.IMGUIModule.dll" Private="false" />
+    <Reference Include="UnityEngine.InputLegacyModule" HintPath="$(PlanetbaseManagedDir)UnityEngine.InputLegacyModule.dll" Private="false" />
+    <Reference Include="UnityEngine.TextRenderingModule" HintPath="$(PlanetbaseManagedDir)UnityEngine.TextRenderingModule.dll" Private="false" />
+    <!-- Self-test only (muting audio, screenshots) -->
+    <Reference Include="UnityEngine.AudioModule" HintPath="$(PlanetbaseManagedDir)UnityEngine.AudioModule.dll" Private="false" />
+    <Reference Include="UnityEngine.ScreenCaptureModule" HintPath="$(PlanetbaseManagedDir)UnityEngine.ScreenCaptureModule.dll" Private="false" />
+  </ItemGroup>
+
+  <Target Name="CheckGameReferences" BeforeTargets="ResolveAssemblyReferences">
+    <Error Condition="!Exists('$(PlanetbaseManagedDir)Assembly-CSharp.dll')"
+           Text="Planetbase was not found in '$(PlanetbaseDir)'. Pass the game folder: dotnet build -p:PlanetbaseDir=&quot;D:\SteamLibrary\steamapps\common\Planetbase&quot; (or set the PLANETBASE_DIR environment variable)." />
+  </Target>
+
+  <Target Name="DeployPluginToGame" AfterTargets="Build"
+          Condition="'$(DeployToGame)' == 'true' and Exists('$(PlanetbaseDir)BepInEx\core\BepInEx.dll')">
+    <Copy SourceFiles="$(TargetPath);$(TargetDir)$(TargetName).pdb"
+          DestinationFolder="$(PlanetbasePluginsDir)PlanetbaseTrainer\"
+          SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="PlanetbaseTrainer -> $(PlanetbasePluginsDir)PlanetbaseTrainer\" />
+  </Target>
+
+  <Target Name="WarnMissingBepInEx" AfterTargets="Build"
+          Condition="'$(DeployToGame)' == 'true' and !Exists('$(PlanetbaseDir)BepInEx\core\BepInEx.dll')">
+    <Warning Text="BepInEx is not installed in '$(PlanetbaseDir)': run tools\Install-BepInEx.ps1, then build again." />
+  </Target>
+
+  <!--
+    Release builds also produce artifacts\PlanetbaseTrainer.zip, laid out like the game folder: extracting it into the
+    game folder installs the plugin. The asset name has no version so that .../releases/latest/download/... links work.
+  -->
+  <Target Name="PackageRelease" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+    <PropertyGroup>
+      <_RepoRoot>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..\'))</_RepoRoot>
+      <_PkgStaging>$(_RepoRoot)artifacts\staging\</_PkgStaging>
+      <_PkgPluginDir>$(_PkgStaging)BepInEx\plugins\PlanetbaseTrainer\</_PkgPluginDir>
+      <_PkgZip>$(_RepoRoot)artifacts\PlanetbaseTrainer.zip</_PkgZip>
+    </PropertyGroup>
+    <ItemGroup>
+      <_PkgFile Include="$(TargetPath);$(TargetDir)$(TargetName).pdb" />
+      <_PkgFile Include="$(_RepoRoot)LICENSE;$(_RepoRoot)README.md;$(_RepoRoot)README.fr.md;$(_RepoRoot)CHANGELOG.md;$(_RepoRoot)THIRD-PARTY-NOTICES.md" />
+    </ItemGroup>
+    <RemoveDir Directories="$(_PkgStaging)" />
+    <Copy SourceFiles="@(_PkgFile)" DestinationFolder="$(_PkgPluginDir)" />
+    <ZipDirectory SourceDirectory="$(_PkgStaging)" DestinationFile="$(_PkgZip)" Overwrite="true" />
+    <RemoveDir Directories="$(_PkgStaging)" />
+    <Message Importance="high" Text="Package -> $(_PkgZip)" />
+  </Target>
+
+</Project>

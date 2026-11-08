@@ -1,0 +1,26 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    cooldown:
+      default-days: 14
+    groups:
+      github-actions:
+        patterns: ["*"]
+    commit-message:
+      prefix: ci
+
+  - package-ecosystem: nuget
+    directory: /
+    schedule:
+      interval: monthly
+    cooldown:
+      default-days: 14
+    ignore:
+      # Compile-time references that must match what BepInEx 5.4.23.5 provides at runtime.
+      - dependency-name: BepInEx.*
+      - dependency-name: HarmonyX
+    commit-message:
+      prefix: build

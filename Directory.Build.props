@@ -1,0 +1,41 @@
+<Project>
+  <!-- Optional machine-specific overrides (not versioned), e.g. a custom PlanetbaseDir. -->
+  <Import Project="$(MSBuildThisFileDirectory)Directory.Build.user.props"
+          Condition="Exists('$(MSBuildThisFileDirectory)Directory.Build.user.props')" />
+
+  <PropertyGroup>
+    <Authors>LASCAMPIA</Authors>
+    <Copyright>Copyright (c) 2026 LASCAMPIA</Copyright>
+    <RepositoryUrl>https://github.com/LASCAMPIA67/PlanetbaseTrainer</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Deterministic build paths on CI (GitHub Actions sets GITHUB_ACTIONS); New-Release.ps1 sets it explicitly. -->
+    <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
+    <!--
+      Repeatable restores: every package, transitive ones included, is pinned with its content hash in
+      packages.lock.json. CI and release builds refuse to restore anything that doesn't match the lock file.
+    -->
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <RestoreLockedMode Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</RestoreLockedMode>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!--
+      Planetbase install folder, resolved in this order:
+        1. dotnet build -p:PlanetbaseDir="D:\...\Planetbase" (or a Directory.Build.user.props file)
+        2. environment variable PLANETBASE_DIR
+        3. parent folder of this repository, when it is cloned inside the game folder
+        4. Steam's install record for Planetbase (app 403190) in the Windows registry
+        5. default Steam library path
+    -->
+    <PlanetbaseDir Condition="'$(PlanetbaseDir)' == '' and '$(PLANETBASE_DIR)' != ''">$(PLANETBASE_DIR)</PlanetbaseDir>
+    <PlanetbaseDir Condition="'$(PlanetbaseDir)' == '' and Exists('$(MSBuildThisFileDirectory)..\Planetbase.exe')">$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..'))</PlanetbaseDir>
+    <PlanetbaseDir Condition="'$(PlanetbaseDir)' == '' and $([MSBuild]::IsOSPlatform('Windows'))">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 403190', 'InstallLocation', null, RegistryView.Registry64, RegistryView.Registry32))</PlanetbaseDir>
+    <PlanetbaseDir Condition="'$(PlanetbaseDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Planetbase</PlanetbaseDir>
+    <PlanetbaseDir>$([MSBuild]::EnsureTrailingSlash('$(PlanetbaseDir)'))</PlanetbaseDir>
+    <PlanetbaseManagedDir>$(PlanetbaseDir)Planetbase_Data\Managed\</PlanetbaseManagedDir>
+    <PlanetbasePluginsDir>$(PlanetbaseDir)BepInEx\plugins\</PlanetbasePluginsDir>
+  </PropertyGroup>
+</Project>
