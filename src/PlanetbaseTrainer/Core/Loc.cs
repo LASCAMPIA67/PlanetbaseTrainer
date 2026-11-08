@@ -92,6 +92,7 @@ namespace PlanetbaseTrainer.Core
             Add("sec.daynight", "Jour et nuit", "Day & night");
             Add("sec.colony", "Colonie", "Colony");
             Add("sec.selection", "Sélection", "Selection");
+            Add("sec.steam", "Steam", "Steam");
 
             // ---------------------------------------------------------------- Colonists
             Add("c.GodMode", "Mode Dieu", "God mode");
@@ -300,6 +301,10 @@ namespace PlanetbaseTrainer.Core
             Add("c.RestoreSelected.d",
                 "Remet au maximum l'élément sélectionné : colon, robot, bâtiment (terminé s'il est en chantier) ou ressource.",
                 "Maxes out the selected item: colonist, bot, building (completed if under construction) or resource.");
+            Add("c.UnlockAchievements", "Débloquer tous les succès Steam", "Unlock all Steam achievements");
+            Add("c.UnlockAchievements.d",
+                "Débloque d'un coup tous les succès Steam du jeu, même si « Protéger les succès Steam » est activé. Définitif : ils restent débloqués sur votre compte Steam.",
+                "Unlocks every Steam achievement of the game at once, even with “Protect Steam achievements” on. Permanent: they stay unlocked on your Steam account.");
 
             // ---------------------------------------------------------------- Options
             Add("opt.mult", "Multiplicateur", "Multiplier");
@@ -439,6 +444,11 @@ namespace PlanetbaseTrainer.Core
             Add("res.alltechs", "Toutes les technologies sont déjà acquises", "All technologies are already acquired");
             Add("res.milestones", "{0} jalon(s) validé(s)", "{0} milestone(s) completed");
             Add("res.allmilestones", "Tous les jalons sont déjà validés", "All milestones are already completed");
+            Add("res.achievements", "{0} succès Steam débloqué(s)", "{0} Steam achievement(s) unlocked");
+            Add("res.allachievements", "Tous les succès Steam sont déjà débloqués", "All Steam achievements are already unlocked");
+            Add("res.nosteam", "Steam n'est pas disponible : lancez le jeu depuis Steam", "Steam is not available: start the game from Steam");
+            Add("res.steamwait", "Steam n'a pas encore chargé vos succès : réessayez dans quelques secondes",
+                "Steam hasn't loaded your achievements yet: try again in a few seconds");
             Add("res.selected", "« {0} » restauré", "“{0}” restored");
             Add("res.noselection", "Sélectionnez d'abord un élément dans le jeu", "Select something in the game first");
             Add("res.failed", "Échec : {0}", "Failed: {0}");

@@ -4,6 +4,7 @@ using Planetbase;
 using PlanetbaseTrainer.Core;
 using PlanetbaseTrainer.Features;
 using UnityEngine;
+using SteamUserStats = Steamworks.SteamUserStats;
 
 namespace PlanetbaseTrainer.Game
 {
@@ -542,6 +543,72 @@ namespace PlanetbaseTrainer.Game
                 MilestoneGuard.Bypass = false;
             }
             return completed > 0 ? ActionResult.Ok(Loc.F("res.milestones", completed)) : ActionResult.Fail(Loc.T("res.allmilestones"));
+        }
+
+        /// <summary>
+        /// Unlocks every achievement Steam defines for the game. An explicit request, so the "Protect Steam achievements"
+        /// setting doesn't apply. Goes through the Steam connection the game opened itself.
+        /// </summary>
+        public static ActionResult UnlockSteamAchievements()
+        {
+            // The self-test holds achievements back for the whole process, even against an explicit request.
+            if (TrainerRuntime.IsTaintedForever)
+                return ActionResult.Fail(Loc.T("res.nothing"));
+            var locked = LockedSteamAchievements(out _, out string problem);
+            if (locked == null)
+                return ActionResult.Fail(Loc.T(problem));
+            if (locked.Count == 0)
+                return ActionResult.Fail(Loc.T("res.allachievements"));
+            int unlocked = 0;
+            foreach (string name in locked)
+            {
+                if (SteamUserStats.SetAchievement(name))
+                    unlocked++;
+                else
+                    Log.Warn("Steam refused to unlock the achievement " + name);
+            }
+            // A single upload for all of them: Steam rate-limits StoreStats.
+            if (unlocked == 0 || !SteamUserStats.StoreStats())
+                return ActionResult.Fail(Loc.T("res.steamwait"));
+            Log.Info($"{unlocked} Steam achievement(s) unlocked on request");
+            return ActionResult.Ok(Loc.F("res.achievements", unlocked));
+        }
+
+        /// <summary>Read-only summary of the player's Steam achievements (self-test log).</summary>
+        public static string DescribeSteamAchievements()
+        {
+            var locked = LockedSteamAchievements(out int total, out string problem);
+            return locked == null ? "not available (" + problem + ")" : $"{total - locked.Count}/{total} unlocked";
+        }
+
+        /// <summary>API names of the Steam achievements still locked, or null (with the reason) when Steam isn't ready.</summary>
+        private static List<string> LockedSteamAchievements(out int total, out string problem)
+        {
+            total = 0;
+            problem = null;
+            // Without Steam, the game falls back to an offline interface that keeps achievements in the profile.
+            var server = Singleton<ServerInterfaceManager>.mInstance;
+            if (server == null || server.getInterfaceName() != nameof(ServerInterfaceSteam))
+            {
+                problem = "res.nosteam";
+                return null;
+            }
+            // Zero until Steam has sent the player's stats, which the game requests every time it connects to Steam.
+            uint count = SteamUserStats.GetNumAchievements();
+            if (count == 0)
+            {
+                problem = "res.steamwait";
+                return null;
+            }
+            total = (int)count;
+            var locked = new List<string>();
+            for (uint i = 0; i < count; i++)
+            {
+                string name = SteamUserStats.GetAchievementName(i);
+                if (!string.IsNullOrEmpty(name) && !(SteamUserStats.GetAchievement(name, out bool achieved) && achieved))
+                    locked.Add(name);
+            }
+            return locked;
         }
 
         public static ActionResult RestoreSelection()

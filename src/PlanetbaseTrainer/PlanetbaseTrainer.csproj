@@ -6,7 +6,7 @@
     <AssemblyName>PlanetbaseTrainer</AssemblyName>
     <RootNamespace>PlanetbaseTrainer</RootNamespace>
     <Product>Planetbase Trainer</Product>
-    <Description>In-game trainer for Planetbase: 48 individually toggleable cheats, rebindable hotkeys, English and French UI.</Description>
+    <Description>In-game trainer for Planetbase: 49 individually toggleable cheats, rebindable hotkeys, English and French UI.</Description>
     <Version>1.0.0</Version>
     <LangVersion>latest</LangVersion>
     <Nullable>disable</Nullable>
@@ -44,6 +44,8 @@
     <Reference Include="UnityEngine.IMGUIModule" HintPath="$(PlanetbaseManagedDir)UnityEngine.IMGUIModule.dll" Private="false" />
     <Reference Include="UnityEngine.InputLegacyModule" HintPath="$(PlanetbaseManagedDir)UnityEngine.InputLegacyModule.dll" Private="false" />
     <Reference Include="UnityEngine.TextRenderingModule" HintPath="$(PlanetbaseManagedDir)UnityEngine.TextRenderingModule.dll" Private="false" />
+    <!-- Steamworks.NET as shipped with the game: "Unlock all Steam achievements" uses the game's own Steam connection. -->
+    <Reference Include="com.rlabrecque.steamworks.net" HintPath="$(PlanetbaseManagedDir)com.rlabrecque.steamworks.net.dll" Private="false" />
     <!-- Self-test only (muting audio, screenshots) -->
     <Reference Include="UnityEngine.AudioModule" HintPath="$(PlanetbaseManagedDir)UnityEngine.AudioModule.dll" Private="false" />
     <Reference Include="UnityEngine.ScreenCaptureModule" HintPath="$(PlanetbaseManagedDir)UnityEngine.ScreenCaptureModule.dll" Private="false" />
