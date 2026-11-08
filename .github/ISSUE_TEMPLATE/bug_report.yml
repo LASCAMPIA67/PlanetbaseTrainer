@@ -29,7 +29,7 @@ body:
     attributes:
       label: Trainer version
       description: Shown in the menu header, below the title.
-      placeholder: "1.0.0"
+      placeholder: "1.1.0"
     validations:
       required: true
   - type: input

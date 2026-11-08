@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-11-08
+
 ### Added
 
 - *Unlock all Steam achievements* action, in a new Steam section of the Progression tab: unlocks every Steam
@@ -41,5 +43,6 @@ First public release, for Planetbase 1.4.2.
 - All-in-one package with BepInEx 5.4.23.5 x86, and SHA-256 checksums for every release file.
 - Developer tools: static patch verifier, in-game end-to-end self-test, BepInEx install, uninstall and release scripts.
 
-[Unreleased]: https://github.com/LASCAMPIA67/PlanetbaseTrainer/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/LASCAMPIA67/PlanetbaseTrainer/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/LASCAMPIA67/PlanetbaseTrainer/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/LASCAMPIA67/PlanetbaseTrainer/releases/tag/v1.0.0

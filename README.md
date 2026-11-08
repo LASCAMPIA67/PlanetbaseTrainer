@@ -237,7 +237,7 @@ Your saves are never touched. Note that Steam's *Verify integrity of game files*
 <details>
 <summary><b>Nothing happens in game, F9 does nothing</b></summary>
 
-Check that `winhttp.dll` is next to `Planetbase.exe`, then start the game: a `BepInEx\LogOutput.log` file should appear. Open it and look for the line `Planetbase Trainer 1.0.0 ready`. If the file doesn't appear, BepInEx isn't loading: make sure you installed the **x86** build of BepInEx 5, since the x64 build doesn't load in Planetbase.
+Check that `winhttp.dll` is next to `Planetbase.exe`, then start the game: a `BepInEx\LogOutput.log` file should appear. Open it and look for the line `Planetbase Trainer 1.1.0 ready`, with your version number. If the file doesn't appear, BepInEx isn't loading: make sure you installed the **x86** build of BepInEx 5, since the x64 build doesn't load in Planetbase.
 
 </details>
 

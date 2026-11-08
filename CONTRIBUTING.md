@@ -143,14 +143,20 @@ requests.
 
 1. Update `<Version>` in `src/PlanetbaseTrainer/PlanetbaseTrainer.csproj`, following
    [Semantic Versioning](https://semver.org/), and move the *Unreleased* entries of `CHANGELOG.md` under the new version.
-2. Commit, then build the packages from that commit: `pwsh .\tools\New-Release.ps1`. It produces, in `artifacts\`,
+2. Build the plugin, then regenerate the README screenshots with the self-test (see above), so that they show the new
+   version. If `docs/images/social-preview.jpg` changed, upload it in the repository settings (*Settings* › *General* ›
+   *Social preview*): GitHub has no API for it.
+3. Commit, then build the packages from that commit: `pwsh .\tools\New-Release.ps1`. It produces, in `artifacts\`,
    `PlanetbaseTrainer.zip`, `PlanetbaseTrainer-with-BepInEx.zip` and `SHA256SUMS.txt`.
-3. Tag and publish:
+4. Tag, then create the release as a draft. Published releases are immutable, so check the draft and its files before
+   publishing it:
 
    ```powershell
    git tag -a v1.0.1 -m "Planetbase Trainer 1.0.1"
    git push origin v1.0.1
-   gh release create v1.0.1 artifacts\PlanetbaseTrainer-with-BepInEx.zip artifacts\PlanetbaseTrainer.zip artifacts\SHA256SUMS.txt --verify-tag --title "Planetbase Trainer 1.0.1" --notes-file notes.md
+   gh release create v1.0.1 artifacts\PlanetbaseTrainer-with-BepInEx.zip artifacts\PlanetbaseTrainer.zip artifacts\SHA256SUMS.txt --verify-tag --draft --title "Planetbase Trainer 1.0.1" --notes-file notes.md
+   gh release edit v1.0.1 --draft=false
+   gh release verify v1.0.1
    ```
 
 The asset names carry no version number, so that the README's `releases/latest/download/...` links always point to the
