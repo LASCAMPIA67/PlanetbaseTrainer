@@ -1,4 +1,12 @@
 version: 2
+
+# Dependabot can only reach nuget.org unless other feeds are declared here. The BepInEx feed (see NuGet.Config) is
+# public and needs no credentials, but without it Dependabot can't restore the solution at all.
+registries:
+  bepinex:
+    type: nuget-feed
+    url: https://nuget.bepinex.dev/v3/index.json
+
 updates:
   - package-ecosystem: github-actions
     directory: /
@@ -14,6 +22,8 @@ updates:
 
   - package-ecosystem: nuget
     directory: /
+    registries:
+      - bepinex
     schedule:
       interval: monthly
     cooldown:
