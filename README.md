@@ -2,7 +2,7 @@
 
 # Planetbase Trainer
 
-**An in-game cheat menu for [Planetbase](https://store.steampowered.com/app/403190/Planetbase/): 48 cheats you can turn on one by one, each with its own rebindable hotkey.**
+**An in-game cheat menu for [Planetbase](https://store.steampowered.com/app/403190/Planetbase/): 49 cheats you can turn on one by one, each with its own rebindable hotkey.**
 
 [![Latest release](https://img.shields.io/github/v/release/LASCAMPIA67/PlanetbaseTrainer?sort=semver)](https://github.com/LASCAMPIA67/PlanetbaseTrainer/releases/latest)
 [![CI](https://github.com/LASCAMPIA67/PlanetbaseTrainer/actions/workflows/ci.yml/badge.svg)](https://github.com/LASCAMPIA67/PlanetbaseTrainer/actions/workflows/ci.yml)
@@ -20,7 +20,7 @@
 
 ## Features
 
-- **48 cheats in 8 categories**: colonists, construction, resources, base utilities, trade, threats, time and progression.
+- **49 cheats in 8 categories**: colonists, construction, resources, base utilities, trade, threats, time and progression.
 - **Every cheat is independent**: turn it on or off from the menu, or with its own hotkey without opening the menu.
 - **Rebind any hotkey in one click**, including <kbd>Ctrl</kbd> / <kbd>Shift</kbd> / <kbd>Alt</kbd> combinations and extra mouse buttons. Conflicts are resolved for you.
 - **Favorites and instant search**, so the cheats you use most are always one click away.
@@ -195,6 +195,7 @@ Clicks and the mouse wheel over the menu never reach the game, and what you type
 | Maximum prestige | Toggle | | Prestige maxed out: more colonists and visitors, but also more intruders. The game then completes the prestige milestone. |
 | Complete all milestones | Action, risky | | Completes the current planet's milestones. **Permanently changes your profile** (unlocks planets). Asks for confirmation. |
 | Restore selection | Action | <kbd>Ctrl</kbd> + <kbd>Num 0</kbd> | Maxes out what you have selected in the game: a colonist, a bot, a building (completed if it is still being built) or a resource. |
+| Unlock all Steam achievements | Action, risky | | Unlocks every Steam achievement of the game at once, even with *Protect Steam achievements* on. **Permanent**: they stay unlocked on your Steam account. Asks for confirmation. |
 
 ## Settings
 
@@ -218,11 +219,11 @@ Everything is in the **Settings** tab and saved automatically to `BepInEx\config
 
 ## Good to know
 
-- **Steam achievements are protected by default.** Nothing is lost: the game checks achievements continuously, so they unlock later in a game played without cheats.
+- **Steam achievements are protected by default.** Nothing is lost: the game checks achievements continuously, so they unlock later in a game played without cheats. If you would rather get them at once, *Unlock all Steam achievements* unlocks every one of them, permanently.
 - **Some cheats change your profile.** Milestones unlock new planets, and the game saves them to your profile as soon as they are reached. *Maximum prestige* and *Unlock all technologies* reach milestones this way. Turn on **Protect profile progression** to stop that while you cheat. *Complete all milestones* always works, on purpose.
 - **Disasters can only be triggered on planets that have them**, otherwise the game would never end them.
 - **Back up your saves before experimenting.** They are in your `Documents\Planetbase` folder.
-- **Planetbase is single-player.** The trainer makes no network connection and doesn't affect any other player.
+- **Planetbase is single-player.** The trainer doesn't affect any other player and makes no network connection of its own: only *Unlock all Steam achievements* talks to Steam, through the game's connection.
 
 ## Uninstalling
 

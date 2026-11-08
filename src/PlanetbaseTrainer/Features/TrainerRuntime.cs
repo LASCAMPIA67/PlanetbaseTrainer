@@ -31,6 +31,9 @@ namespace PlanetbaseTrainer.Features
         /// <summary>Holds achievements back for the whole process lifetime (used by the self-test).</summary>
         public static void TaintForever() => _alwaysTainted = true;
 
+        /// <summary>True once <see cref="TaintForever"/> has been called: no achievement may unlock, not even on request.</summary>
+        public static bool IsTaintedForever => _alwaysTainted;
+
         public static void Update()
         {
             Settings.Tick();

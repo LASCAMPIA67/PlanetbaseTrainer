@@ -54,7 +54,7 @@ namespace PlanetbaseTrainer.Features
 
         // ---- Progression
         public static ToggleCheat MaxPrestige;
-        public static ActionCheat UnlockTechs, CompleteMilestones, RestoreSelected;
+        public static ActionCheat UnlockTechs, CompleteMilestones, RestoreSelected, UnlockAchievements;
 
         private static ConfigFile _cfg;
 
@@ -204,6 +204,9 @@ namespace PlanetbaseTrainer.Features
             CompleteMilestones.Confirm = true;
             CompleteMilestones.Danger = true;
             RestoreSelected = Command("RestoreSelected", Tab.Progression, "sec.selection", Key(KeyCode.Keypad0, ctrl: true), GameActions.RestoreSelection);
+            UnlockAchievements = Command("UnlockAchievements", Tab.Progression, "sec.steam", none, GameActions.UnlockSteamAchievements);
+            UnlockAchievements.Confirm = true;
+            UnlockAchievements.Danger = true;
         }
 
         /// <summary>Restores the cheats active during the previous session (after the patches have been applied).</summary>

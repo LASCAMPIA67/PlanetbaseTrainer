@@ -51,7 +51,7 @@ src/PlanetbaseTrainer/
 ├── Plugin.cs                 BepInEx entry point
 ├── Core/                     settings, English/French texts, persisted options, hotkeys, tolerant reflection,
 │                             workaround for the BepInEx crash at exit
-├── Features/                 cheat model, registry of the 48 cheats, runtime loop (hotkeys, periodic tasks)
+├── Features/                 cheat model, registry of the 49 cheats, runtime loop (hotkeys, periodic tasks)
 ├── Game/                     safe access to the game, actions (spawning, resources, construction…), controllers
 ├── Patches/                  Harmony patches, grouped by feature and applied group by group
 ├── UI/                       IMGUI menu: theme, widgets, window, settings page, HUD, notifications
@@ -89,9 +89,9 @@ every member accessed by name through reflection exists. Run it after every game
 
 When the `PBTRAINER_SELFTEST` environment variable points to a folder, the plugin runs an end-to-end test: it opens the
 menu on every tab, starts a throw-away game, turns every cheat on, runs every action (except those that write to the
-player profile), takes screenshots, turns everything off and quits. The game plays with a temporary profile created in
-that folder, so your own profile and saves are never touched, and achievements and milestones stay locked during the
-whole run.
+player profile or the Steam account, whose achievements it only reads), takes screenshots, turns everything off and
+quits. The game plays with a temporary profile created in that folder, so your own profile and saves are never touched,
+and achievements and milestones stay locked during the whole run.
 
 ```powershell
 $game = .\tools\Resolve-PlanetbaseDir.ps1

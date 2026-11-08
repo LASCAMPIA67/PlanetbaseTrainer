@@ -72,7 +72,7 @@ def build_social_preview():
     draw.text((x, 250), "Planetbase", font=title_font, fill=accent, anchor="ls")
     draw.text((x, 332), "Trainer", font=title_font, fill=(255, 255, 255, 255), anchor="ls")
     draw.rounded_rectangle((x, 362, x + 64, 368), radius=3, fill=accent)
-    lines = ["48 cheats, toggled one by one", "Rebindable hotkeys", "English & French menu", "Free & open source"]
+    lines = ["49 cheats, toggled one by one", "Rebindable hotkeys", "English & French menu", "Free & open source"]
     for i, line in enumerate(lines):
         draw.text((x, 418 + i * 42), line, font=text_font, fill=(214, 222, 232, 255), anchor="ls")
     save_jpg(card.convert("RGB"), OUT / "social-preview.jpg", quality=88)

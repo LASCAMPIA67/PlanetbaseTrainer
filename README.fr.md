@@ -2,7 +2,7 @@
 
 # Planetbase Trainer
 
-**Un menu de triche intégré à [Planetbase](https://store.steampowered.com/app/403190/Planetbase/) : 48 triches à activer une par une, chacune avec son raccourci clavier modifiable.**
+**Un menu de triche intégré à [Planetbase](https://store.steampowered.com/app/403190/Planetbase/) : 49 triches à activer une par une, chacune avec son raccourci clavier modifiable.**
 
 [![Dernière version](https://img.shields.io/github/v/release/LASCAMPIA67/PlanetbaseTrainer?sort=semver&label=version)](https://github.com/LASCAMPIA67/PlanetbaseTrainer/releases/latest)
 [![CI](https://github.com/LASCAMPIA67/PlanetbaseTrainer/actions/workflows/ci.yml/badge.svg)](https://github.com/LASCAMPIA67/PlanetbaseTrainer/actions/workflows/ci.yml)
@@ -20,7 +20,7 @@
 
 ## Fonctionnalités
 
-- **48 triches en 8 catégories** : colons, construction, ressources, réseaux de la base, commerce, menaces, temps et progression.
+- **49 triches en 8 catégories** : colons, construction, ressources, réseaux de la base, commerce, menaces, temps et progression.
 - **Chaque triche est indépendante** : activez-la ou désactivez-la depuis le menu, ou avec son propre raccourci sans ouvrir le menu.
 - **Changez n'importe quel raccourci en un clic**, combinaisons avec <kbd>Ctrl</kbd> / <kbd>Maj</kbd> / <kbd>Alt</kbd> et boutons latéraux de la souris comprises. Les conflits sont réglés automatiquement.
 - **Favoris et recherche instantanée**, pour garder vos triches préférées à portée de clic.
@@ -195,6 +195,7 @@ Les **interrupteurs** restent actifs jusqu'à ce que vous les coupiez. Les **act
 | Prestige maximal | Interrupteur | | Prestige au maximum : plus de colons et de visiteurs, mais aussi plus d'intrus. Le jeu valide alors le jalon de prestige. |
 | Valider tous les jalons | Action, risquée | | Valide les jalons de la planète actuelle. **Modifie définitivement votre profil** (planètes débloquées). Demande confirmation. |
 | Restaurer la sélection | Action | <kbd>Ctrl</kbd> + <kbd>Num 0</kbd> | Remet au maximum ce que vous avez sélectionné dans le jeu : un colon, un robot, un bâtiment (terminé s'il est encore en chantier) ou une ressource. |
+| Débloquer tous les succès Steam | Action, risquée | | Débloque d'un coup tous les succès Steam du jeu, même si *Protéger les succès Steam* est activé. **Définitif** : ils restent débloqués sur votre compte Steam. Demande confirmation. |
 
 ## Paramètres
 
@@ -218,11 +219,11 @@ Tout se règle dans l'onglet **Paramètres** et s'enregistre automatiquement dan
 
 ## Bon à savoir
 
-- **Les succès Steam sont protégés par défaut.** Vous ne perdez rien : le jeu vérifie les succès en continu, ils se débloqueront plus tard dans une partie jouée sans triche.
+- **Les succès Steam sont protégés par défaut.** Vous ne perdez rien : le jeu vérifie les succès en continu, ils se débloqueront plus tard dans une partie jouée sans triche. Si vous préférez les obtenir d'un coup, *Débloquer tous les succès Steam* les débloque tous, définitivement.
 - **Certaines triches modifient votre profil.** Les jalons débloquent de nouvelles planètes, et le jeu les enregistre dans votre profil dès qu'ils sont atteints. *Prestige maximal* et *Débloquer toutes les technologies* atteignent des jalons de cette façon. Activez **Protéger la progression du profil** pour l'empêcher pendant que vous trichez. *Valider tous les jalons* fonctionne toujours, volontairement.
 - **Les catastrophes ne se déclenchent que sur les planètes qui les connaissent**, sinon le jeu ne les terminerait jamais.
 - **Sauvegardez vos parties avant d'expérimenter.** Elles se trouvent dans votre dossier `Documents\Planetbase`.
-- **Planetbase est un jeu solo.** Le trainer ne se connecte à rien et n'affecte aucun autre joueur.
+- **Planetbase est un jeu solo.** Le trainer n'affecte aucun autre joueur et n'ouvre aucune connexion : seule l'action *Débloquer tous les succès Steam* s'adresse à Steam, par la connexion du jeu.
 
 ## Désinstallation
 

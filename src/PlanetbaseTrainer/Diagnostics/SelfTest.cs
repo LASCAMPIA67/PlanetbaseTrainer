@@ -14,8 +14,8 @@ namespace PlanetbaseTrainer.Diagnostics
     /// <summary>
     /// Opt-in end-to-end test, enabled only when the environment variable PBTRAINER_SELFTEST points to an output folder.
     /// It opens the menu on every tab, starts a throw-away new game, enables every cheat, runs every action
-    /// (except those writing to the player profile), takes screenshots, then quits. Achievements and milestones are held
-    /// back for the whole run. Never active in normal use.
+    /// (except those writing to the player profile or the Steam account), takes screenshots, then quits. Achievements and
+    /// milestones are held back for the whole run. Never active in normal use.
     /// <para>
     /// PBTRAINER_SELFTEST_LANGS (for example "en,fr") repeats the in-game screenshots in each listed language: this is how
     /// the documentation screenshots are produced. The language override is never saved to the configuration.
@@ -147,11 +147,14 @@ namespace PlanetbaseTrainer.Diagnostics
             }
             yield return 2f;
 
-            // ---- 5. Every action, except those that write to the player's profile
+            // ---- 5. Every action, except those that write to the player's profile or Steam account
             //         (owning every technology completes the "Technocracy" milestone, which the game saves to the profile).
+            //         The Steam achievements are only read.
+            Log.Info("[SelfTest] Steam achievements: " + GameActions.DescribeSteamAchievements());
             foreach (var cheat in Cheats.All)
             {
-                if (!(cheat is ActionCheat action) || action == Cheats.CompleteMilestones || action == Cheats.UnlockTechs)
+                if (!(cheat is ActionCheat action) || action == Cheats.CompleteMilestones || action == Cheats.UnlockTechs ||
+                    action == Cheats.UnlockAchievements)
                     continue;
                 try
                 {
